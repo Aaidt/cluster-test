@@ -1,6 +1,6 @@
 import cluster from "cluster";
 import os from "os";
-import app from "./bin.js"
+import { app } from "./index.js"
 
 const CPU_COUNT = os.cpus().length
 
@@ -20,6 +20,6 @@ if(cluster.isPrimary){
     })
 }else{ 
     app.listen(3000, () => {
-        console.log("app listnetning on prt: 3000")
+        console.log(`Worker ${process.pid} started.`)
     })
 }
