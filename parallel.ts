@@ -1,5 +1,5 @@
 import cluster from "cluster";
-import os from "os";
+import * as os from "os";
 
 const total_cpus = os.cpus().length;
 const count = 1_000_000_000_0;
@@ -19,10 +19,10 @@ if (cluster.isPrimary) {
         worker.send({ start, end });
 
         worker.on('message', (msg) => {
-            if(msg.partialSum !== undefined){
+            if (msg.partialSum !== undefined) {
                 total += msg.partialSum
                 completed++
-                if(completed == total_cpus){
+                if (completed == total_cpus) {
                     const endTime = Date.now()
                     console.log('Total sum: ' + total);
                     console.log(`Total time: ${endTime - startTime}`);
@@ -33,16 +33,16 @@ if (cluster.isPrimary) {
 
     }
 } else {
-    process.on('message', (msg) => {
+    process.on('message', (msg: { start: number, end: number }) => {
         const { start, end } = msg
         let localSum = 0;
         const t0 = Date.now();
 
-        for (let n = start; n < end; n ++){
+        for (let n = start; n < end; n++) {
             localSum += n
         }
         const t1 = Date.now()
-        process.send({ partialSum: localSum });
+        if (process.send) process.send({ partialSum: localSum });
         console.log(`Worker ${process.pid} completed in ${(t1 - t0) / 1000} seconds`)
     })
 }   

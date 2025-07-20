@@ -1,19 +1,21 @@
-import express from "express"
-import os from "os";
+import express, { Request, Response } from "express"
+import * as os from "os";
 
-export const app = express();
+const app = express();
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
     res.send("Helo world")
 })
 
-app.get("/cpu", (req, res) => {
-    for(let i = 0; i < 100000000000; i++ ){
+app.get("/cpu", (req: Request, res: Response) => {
+    for (let i = 0; i < 100000000000; i++) {
         Math.random()
     }
     res.send("Hellow world");
 })
 
-app.get("/host", (req, res) => {
+app.get("/host", (req: Request, res: Response) => {
     res.send(os.hostname())
 })
+
+export default app

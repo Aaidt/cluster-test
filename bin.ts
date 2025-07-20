@@ -1,6 +1,6 @@
 import cluster from "cluster";
-import os from "os";
-import { app } from "./index.js"
+import * as os from "os";
+import app from "./index"
 
 const CPU_COUNT = os.cpus().length
 
